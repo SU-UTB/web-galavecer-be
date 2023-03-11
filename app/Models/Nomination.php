@@ -9,5 +9,14 @@ class Nomination extends Model
 {
     use HasFactory;
 
-    
+    protected $table = 'nominations';
+    protected $fillable = [
+        'recommendator_first_name',
+        'recommendator_last_name',
+        'recommendator_email',
+        'faculty',
+        'nominee_first_name',
+        'nominee_last_name',
+        'achievements'
+    ];
 }
