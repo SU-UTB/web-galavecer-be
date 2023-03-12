@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faculty;
 use App\Models\Nomination;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,10 @@ class NominationsController extends Controller
 {
     public static function index()
     {
-        return Nomination::all();
+        $faculties = Faculty::all();
+        return response()->json(array(
+            'faculties' => $faculties->toArray()
+        ));
     }
 
     public function store(Request $request)
