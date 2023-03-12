@@ -25,7 +25,7 @@ class AdministrationController extends Controller
     {
         $nominations = Nomination::all()->toArray();
         foreach ($nominations as $nomination) {
-            $faculty = Faculty::where('id', '=', $nomination['faculty'])->first();
+            $faculty = Faculty::where('id', '=', $nomination['faculty_id'])->first();
             $nomination['faculty'] = $faculty->faculty_name;
         }
         return $nominations;

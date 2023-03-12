@@ -38,7 +38,7 @@
                         <td>{{ $nomination['recommendator_first_name'] }}</td>
                         <td>{{ $nomination['recommendator_last_name'] }}</td>
                         <td>{{ $nomination['recommendator_email'] }}</td>
-                        <td>{{ $nomination['faculty'] }}</td>
+                        <td>{{ $nomination['faculty_id'] }}</td>
                         <td>{{ $nomination['nominee_first_name'] }}</td>
                         <td>{{ $nomination['nominee_last_name'] }}</td>
                         <td>{{ $nomination['achievements'] }}</td>
