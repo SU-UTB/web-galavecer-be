@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faculty;
 use App\Models\Nomination;
 use Illuminate\Http\Request;
 
@@ -13,15 +14,20 @@ class AdministrationController extends Controller
         return view('dashboard', ['nominations' => $data]);
     }
 
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
         $nomination = Nomination::where('id', '=', $id)->get();
-        $this->destroy($id);
+        $nomination->destroy($id);
         return AdministrationController::nominations();
     }
 
     private static function getNominationsData()
     {
-        return $nominations = Nomination::all()->toArray();
+        $nominations = Nomination::all()->toArray();
+        foreach ($nominations as $nomination) {
+            $faculty = Faculty::where('id', '=', $nomination['faculty'])->first();
+            $nomination['faculty'] = $faculty->faculty_name;
+        }
+        return $nominations;
     }
 }
