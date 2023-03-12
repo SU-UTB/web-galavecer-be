@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/nominations', [NominationsController::class, 'index']);
+Route::post('/nominations', [NominationsController::class, 'store']);
