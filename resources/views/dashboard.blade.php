@@ -17,38 +17,38 @@
 
     <div class="container mt-4">
 
-    <table class="table table-striped">
-                <thead>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Jméno - navrhovatel</th>
+                    <th scope="col">Příjmení - navrhovatel</th>
+                    <th scope="col">Email - navrhovatel</th>
+                    <th scope="col">Fakulta</th>
+                    <th scope="col">Jméno - nominovaný</th>
+                    <th scope="col">Příjmení - nominovaný</th>
+                    <th scope="col">Úspěchy</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($nominations as $nomination)
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Jméno - navrhovatel</th>
-                        <th scope="col">Příjmení - navrhovatel</th>
-                        <th scope="col">Email - navrhovatel</th>
-                        <th scope="col">Fakulta</th>
-                        <th scope="col">Jméno - nominovaný</th>
-                        <th scope="col">Příjmení - nominovaný</th>
-                        <th scope="col">Úspěchy</th>
-                        <th scope="col"></th>
+                        <th scope="row">{{ $nomination['id'] }}</th>
+                        <td>{{ $nomination['recommendator_first_name'] }}</td>
+                        <td>{{ $nomination['recommendator_last_name'] }}</td>
+                        <td>{{ $nomination['recommendator_email'] }}</td>
+                        <td>{{ $nomination['faculty'] }}</td>
+                        <td>{{ $nomination['nominee_first_name'] }}</td>
+                        <td>{{ $nomination['nominee_last_name'] }}</td>
+                        <td>{{ $nomination['achievements'] }}</td>
+                        <td>
+                            <button type="submit" class="btn btn-orange">
+                                <a href="{{ route('deleteNomination', $nomination['id']) }}">Smazat</a></button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($nominations as $nomination)
-                        <tr>
-                            <th scope="row">{{ $nomination['id'] }}</th>
-                            <td>{{ $nomination['recommendator_first_name'] }}</td>
-                            <td>{{ $nomination['recommendator_last_name'] }}</td>
-                            <td>{{ $nomination['recommendator_email'] }}</td>
-                            <td>{{ $nomination['faculty'] }}</td>
-                            <td>{{ $nomination['nominee_first_name'] }}</td>
-                            <td>{{ $nomination['nominee_last_name'] }}</td>
-                            <td>{{ $nomination['achievements'] }}</td>
-                            <td>
-                                <button type="submit" class="btn btn-orange">
-                                    <a href="{{ route('deleteNomination', $nomination['id']) }}">Smazat</a></button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </x-app-layout>
