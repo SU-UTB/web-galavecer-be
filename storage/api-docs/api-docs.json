@@ -1,0 +1,103 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SU Galavecer - Api Documentation",
+        "description": "Api Documentation for UTB Gala Ball",
+        "contact": {
+            "name": "Sedlar David",
+            "email": "sedlar@sutb.cz"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/v1"
+        }
+    ],
+    "paths": {
+        "/api/nominations": {
+            "get": {
+                "tags": [
+                    "Nominations"
+                ],
+                "summary": "Get data for nominations index page",
+                "description": "Gets list of faculties to render",
+                "operationId": "index",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Nominations"
+                ],
+                "summary": "Creates a nomination",
+                "operationId": "0cf0cc14b67f149681cb52b89db58318",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "firstName": {
+                                        "type": "string"
+                                    },
+                                    "lastName": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "facultyNominated": {
+                                        "type": "integer"
+                                    },
+                                    "firstNameNominated": {
+                                        "type": "string"
+                                    },
+                                    "lastNameNominated": {
+                                        "type": "string"
+                                    },
+                                    "achievementsNominated": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "firstName": "David",
+                                    "lastName": "sedlar",
+                                    "email": "sedlar@utb.cz",
+                                    "facultyNominated": 1,
+                                    "firstNameNominated": "Filip",
+                                    "lastNameNominated": "Tomes",
+                                    "achievementsNominated": "Popici kluk to je"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    }
+}

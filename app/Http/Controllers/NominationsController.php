@@ -5,9 +5,46 @@ namespace App\Http\Controllers;
 use App\Models\Faculty;
 use App\Models\Nomination;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
+
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="SU Galavecer - Api Documentation",
+ *     description="Api Documentation for UTB Gala Ball",
+ *     @OA\Contact(
+ *         name="Sedlar David",
+ *         email="sedlar@sutb.cz"
+ *     ),
+ *     @OA\License(
+ *         name="Apache 2.0",
+ *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
+ * ),
+ * @OA\Server(
+ *     url="/api/v1",
+ * ),
+ */
 class NominationsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    /**
+     * @OA\Get(
+     *    path="/api/nominations",
+     *    operationId="index",
+     *    tags={"Nominations"},
+     *    summary="Get data for nominations index page",
+     *    description="Gets list of faculties to render",
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     *  )
+     */
     public static function index()
     {
         $faculties = Faculty::all();
@@ -15,6 +52,59 @@ class NominationsController extends Controller
             'faculties' => $faculties->toArray()
         ));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    /**
+     * @OA\Post(
+     *   tags={"Nominations"},
+     *   path="/api/nominations",
+     *   summary="Creates a nomination",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="firstName",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="lastName",
+     *                     type="string"
+     *                 ),
+     *                @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                   @OA\Property(
+     *                     property="facultyNominated",
+     *                     type="integer"
+     *                 ),
+     *            @OA\Property(
+     *                     property="firstNameNominated",
+     *                     type="string"
+     *                 ),
+     *            @OA\Property(
+     *                     property="lastNameNominated",
+     *                     type="string"
+     *                 ),
+     *            @OA\Property(
+     *                     property="achievementsNominated",
+     *                     type="string"
+     *                 ),
+     *                 example={"firstName": "David", "lastName": "sedlar", "email" : "sedlar@utb.cz", "facultyNominated" : 1, "firstNameNominated" : "Filip" , "lastNameNominated" :"Tomes" ,"achievementsNominated" :"Popici kluk to je"}
+     *             )
+     *         )
+     *     ),
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     * )
+     */
 
     public function store(Request $request)
     {
@@ -69,4 +159,42 @@ class NominationsController extends Controller
 
         return false;
     }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        return Nomination::find($id);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function update(Request $request, $id)
+    {
+        $nomination = Nomination::find($id);
+        $nomination->update($request->all());
+        return $nomination;
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        return Nomination::destroy($id);
+    }
+
 }
