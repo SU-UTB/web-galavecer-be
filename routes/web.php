@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministrationController;
+use App\Http\Controllers\NominationsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/admin', [AdministrationController::class, 'dashboard'])->name('dashboard');
+    Route::get('/admin/nominations', [AdministrationController::class, 'nominations'])->name('nominations');
+    Route::post('/admin/nominations/search', [AdministrationController::class, 'nominationsSearch'])->name('search-nominations');
+    Route::get('/admin/nominations/{id}', [NominationsController::class, 'destroy'])->name('deleteNomination');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
