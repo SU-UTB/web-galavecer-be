@@ -14,7 +14,7 @@ class Nomination extends Model
         'recommendator_first_name',
         'recommendator_last_name',
         'recommendator_email',
-        'faculty',
+        'faculty_id',
         'nominee_first_name',
         'nominee_last_name',
         'achievements'
