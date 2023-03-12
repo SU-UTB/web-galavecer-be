@@ -197,4 +197,9 @@ class NominationsController extends Controller
         return Nomination::destroy($id);
     }
 
+    public function remove(Request $request, $id)
+    {
+        $this->destroy($id);
+        return AdministrationController::nominations();
+    }
 }
