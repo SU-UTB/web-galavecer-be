@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Nomination;
 use Illuminate\Http\Request;
 
 class AdministrationController extends Controller
@@ -9,7 +10,7 @@ class AdministrationController extends Controller
     public static function nominations()
     {
         $data = AdministrationController::getNominationsData();
-        return view('administration/nominations', ['nominations => $data']);
+        return view('dashboard', ['nominations' => $data]);
     }
 
     public function delete(Request $request, $id)

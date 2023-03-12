@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('recommendator_first_name');
             $table->string('recommendator_last_name');
             $table->string('recommendator_email');
-            $table->enum('faculty', ['Fakulta technologická', 'Fakulta managementu a ekonomiky', 'Fakulta multimediálních komunikací', 'Fakulta aplikované informatiky', 'Fakulta humanitních studií', 'Fakulta logistiky a krizového řízení']);
+            $table->foreignId('faculty_id')->references('id')->on('faculties');
             $table->string('nominee_first_name');
             $table->string('nominee_last_name');
             $table->string('achievements');
