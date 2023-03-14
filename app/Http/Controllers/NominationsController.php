@@ -128,7 +128,7 @@ class NominationsController extends Controller
             'achievementsNominated' => ['required']
         ]);
 
-        $emailValidation = $this->validateEmailDomain($request->input('nominee_email'));
+        $emailValidation = $this->validateEmailDomain($request->input('emailNominated'));
 
         if ($emailValidation === false) {
             return response()->json([
@@ -144,7 +144,7 @@ class NominationsController extends Controller
             'category_id' => (int) $request->input('categoryNominated'),
             'nominee_first_name' => $request->input('firstNameNominated'),
             'nominee_last_name' => $request->input('lastNameNominated'),
-            'nominee_email' => $request->input('email'),
+            'nominee_email' => $request->input('emailNominated'),
             'achievements' => $request->input('achievementsNominated'),
         ]);
 
