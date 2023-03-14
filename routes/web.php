@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\NominationsController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('migrate', function () {
+    //$exitCode = Artisan::call('migrate:fresh --seed --force');
+    $exitCode = Artisan::call('migrate');
+    return $exitCode;
+});
 
 Route::middleware('auth')->group(function () {
 
