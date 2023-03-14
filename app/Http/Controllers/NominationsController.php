@@ -125,8 +125,15 @@ class NominationsController extends Controller
             'firstNameNominated' => ['required'],
             'lastNameNominated' => ['required'],
             'emailNominated' => ['required'],
-            'achievementsNominated' => ['required']
+            'achievementsNominated' => ['required'],
+            'consent' => ['required']
         ]);
+
+        if ((int) $request->input('consent') === 0) {
+            return response()->json([
+                'error' => 'Consent must be accepted!'
+            ], 400);
+        }
 
         $emailValidation = $this->validateEmailDomain($request->input('emailNominated'));
 
@@ -146,6 +153,7 @@ class NominationsController extends Controller
             'nominee_last_name' => $request->input('lastNameNominated'),
             'nominee_email' => $request->input('emailNominated'),
             'achievements' => $request->input('achievementsNominated'),
+            'consent' => (int) $request->input('consent')
         ]);
 
         $data = ['nomination' => $nomination];

@@ -18,6 +18,7 @@ class Nomination extends Model
         'nominee_first_name',
         'nominee_last_name',
         'nominee_email',
-        'achievements'
+        'achievements',
+        'consent'
     ];
 }
