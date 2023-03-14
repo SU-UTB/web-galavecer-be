@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Faculty;
 use App\Models\Nomination;
 use Illuminate\Http\Request;
@@ -48,9 +49,13 @@ class NominationsController extends Controller
     public static function index()
     {
         $faculties = Faculty::all();
-        return response()->json(array(
-            'faculties' => $faculties->toArray()
-        ));
+        $categories = Category::all();
+        return response()->json(
+            array(
+                'faculties' => $faculties->toArray(),
+                'categories' => $categories->toArray()
+            )
+        );
     }
 
     /**
@@ -76,12 +81,12 @@ class NominationsController extends Controller
      *                     property="lastName",
      *                     type="string"
      *                 ),
-     *                @OA\Property(
-     *                     property="email",
-     *                     type="string"
-     *                 ),
      *                   @OA\Property(
      *                     property="facultyNominated",
+     *                     type="integer"
+     *                 ),
+     *                    @OA\Property(
+     *                     property="categoryNominated",
      *                     type="integer"
      *                 ),
      *            @OA\Property(
@@ -92,11 +97,15 @@ class NominationsController extends Controller
      *                     property="lastNameNominated",
      *                     type="string"
      *                 ),
+     *                @OA\Property(
+     *                     property="emailNominated",
+     *                     type="string"
+     *                 ),
      *            @OA\Property(
      *                     property="achievementsNominated",
      *                     type="string"
      *                 ),
-     *                 example={"firstName": "David", "lastName": "sedlar", "email" : "sedlar@utb.cz", "facultyNominated" : 1, "firstNameNominated" : "Filip" , "lastNameNominated" :"Tomes" ,"achievementsNominated" :"Popici kluk to je"}
+     *                 example={"firstName": "David", "lastName": "sedlar", "facultyNominated" : 1, "categoryNominated" : 2, "firstNameNominated" : "Filip" , "lastNameNominated" :"Tomes",  "emailNominated" : "tomes@utb.cz" ,"achievementsNominated" :"Popici kluk to je"}
      *             )
      *         )
      *     ),
@@ -111,14 +120,15 @@ class NominationsController extends Controller
         $request->validate([
             'firstName' => ['required'],
             'lastName' => ['required'],
-            'email' => ['required'],
             'facultyNominated' => ['required'],
+            'categoryNominated' => ['required'],
             'firstNameNominated' => ['required'],
             'lastNameNominated' => ['required'],
+            'emailNominated' => ['required'],
             'achievementsNominated' => ['required']
         ]);
 
-        $emailValidation = $this->validateEmailDomain($request->input('email'));
+        $emailValidation = $this->validateEmailDomain($request->input('nominee_email'));
 
         if ($emailValidation === false) {
             return response()->json([
@@ -130,10 +140,11 @@ class NominationsController extends Controller
         $nomination = Nomination::create([
             'recommendator_first_name' => $request->input('firstName'),
             'recommendator_last_name' => $request->input('lastName'),
-            'recommendator_email' => $request->input('email'),
-            'faculty_id' => (int)$request->input('facultyNominated'),
+            'faculty_id' => (int) $request->input('facultyNominated'),
+            'category_id' => (int) $request->input('categoryNominated'),
             'nominee_first_name' => $request->input('firstNameNominated'),
             'nominee_last_name' => $request->input('lastNameNominated'),
+            'nominee_email' => $request->input('email'),
             'achievements' => $request->input('achievementsNominated'),
         ]);
 
@@ -153,7 +164,7 @@ class NominationsController extends Controller
             if ($pos === false)
                 continue;
 
-            if ($pos == 0 || $email[(int)$pos - 1] == "@" || $email[(int)$pos - 1] == ".")
+            if ($pos == 0 || $email[(int) $pos - 1] == "@" || $email[(int) $pos - 1] == ".")
                 return true;
         }
 

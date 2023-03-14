@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Faculty;
 use App\Models\Nomination;
 use Illuminate\Http\Request;
@@ -42,12 +43,24 @@ class AdministrationController extends Controller
             $data = array_filter(
                 $data,
                 function ($var) use ($search, $data) {
-                    return AdministrationController::array_any($data, function ($alias) use ($search) {
-                            return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
-                        }) ||
-                        AdministrationController::array_any($data, function ($alias) use ($search) {
-                            return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                        });
+                    return AdministrationController::array_any(
+                        $data,
+                        function ($alias) use ($search) {
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
+                    ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                                }
+                        ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                                }
+                        );
                 }
             );
             return view('administration/nominations', ["nominations" => $data, "search" => $search]);
@@ -58,10 +71,12 @@ class AdministrationController extends Controller
     {
         $nominations = Nomination::all()->toArray();
         $faculties = Faculty::all();
+        $categories = Category::all();
         $data = [];
 
         foreach ($nominations as $nomination) {
             $nomination['faculty'] = $faculties->find($nomination['faculty_id']);
+            $nomination['category'] = $categories->find($nomination['category_id']);
             array_push($data, $nomination);
         }
 
