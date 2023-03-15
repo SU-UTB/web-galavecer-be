@@ -44,22 +44,22 @@ class AdministrationController extends Controller
                 $data,
                 function ($var) use ($search, $data) {
                     return AdministrationController::array_any(
-                        $data,
-                        function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
-                            }
-                    ) ||
-                        AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                                }
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
                         ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
-                                }
+                                return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                            }
+                        ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                            }
                         );
                 }
             );
@@ -75,8 +75,12 @@ class AdministrationController extends Controller
         $data = [];
 
         foreach ($nominations as $nomination) {
+            $categoryId = $nomination['category_id'];
+            if ($categoryId === 8) {
+                $categoryId = 7;
+            }
             $nomination['faculty'] = $faculties->find($nomination['faculty_id']);
-            $nomination['category'] = $categories->find($nomination['category_id']);
+            $nomination['category'] = $categories->find($categoryId);
             array_push($data, $nomination);
         }
 
