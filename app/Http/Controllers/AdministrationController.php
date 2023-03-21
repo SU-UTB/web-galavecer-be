@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Faculty;
 use App\Models\Nomination;
 use App\Models\Nominee;
+use App\Models\Vote;
 use Illuminate\Http\Request;
 
 class AdministrationController extends Controller
@@ -35,6 +36,12 @@ class AdministrationController extends Controller
     {
         $data = AdministrationController::getNomineesData();
         return view('administration/nominees', ["nominees" => $data, "search" => ""]);
+    }
+
+    public static function votes()
+    {
+        $data = AdministrationController::getVotesData();
+        return view('administration/votes', ["votes" => $data, "search" => ""]);
     }
 
     public function nomineesSearch(Request $request)
@@ -132,6 +139,21 @@ class AdministrationController extends Controller
         $response = Nomination::selectRaw('nominee_email, GROUP_CONCAT(DISTINCT achievements SEPARATOR " ") as achievements_merged')
             ->groupBy('nominee_email')
             ->get();
+        //no idea
+    }
+
+    private static function getVotesData()
+    {
+        $nominees = Nominee::all();
+        $votes = Vote::all();
+        $data = [];
+
+        foreach ($votes as $vote) {
+            $vote['nominee'] = $nominees->find($vote['nominee_id']);
+            array_push($data, $vote);
+        }
+
+        return $data;
     }
 
     private static function getNominationsData()
@@ -152,7 +174,6 @@ class AdministrationController extends Controller
         }
 
         return $data;
-
     }
 
     private static function array_any(array $array, callable $fn)

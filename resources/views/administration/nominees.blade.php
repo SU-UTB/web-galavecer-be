@@ -33,7 +33,7 @@
             <br>
             <div class="mx-auto" style="width: 250px;">
                 <form name="search-reservation-form" id="search-reservation-form" method="POST"
-                    action="{{ route('search-nomineees') }}">
+                    action="{{ route('search-nominees') }}">
                     @csrf
 
                     <input type="text" class="form-control" id="search" name="search"
