@@ -136,9 +136,9 @@ class AdministrationController extends Controller
 
     private static function FillNomineesTable()
     {
-        $response = Nomination::selectRaw('nominee_email, GROUP_CONCAT(DISTINCT achievements SEPARATOR " ") as achievements_merged')
+        $response = Nomination::selectRaw('nominee_email, GROUP_CONCAT(DISTINCT achievements SEPARATOR " ") as achievements')
             ->groupBy('nominee_email')
-            ->get();
+            ->get(); //without categories sportovec/sportovni tym
         //no idea
     }
 

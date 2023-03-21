@@ -18,6 +18,12 @@
             <li class="nav-item">
                 <a class="nav-link {{ $aNominations }}" href="/admin/nominations">Nominations</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $aNominees }}" href="/admin/nominees">Nominees</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $aVotes }}" href="/admin/votes">Votes</a>
+            </li>
 
         </ul>
         <div class="mx-auto"></div>
