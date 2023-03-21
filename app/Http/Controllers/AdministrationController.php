@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Faculty;
 use App\Models\Nomination;
+use App\Models\Nominee;
 use Illuminate\Http\Request;
 
 class AdministrationController extends Controller
@@ -30,6 +31,49 @@ class AdministrationController extends Controller
         return view('administration/nominations', ["nominations" => $data, "search" => ""]);
     }
 
+    public static function nominees()
+    {
+        $data = AdministrationController::getNomineesData();
+        return view('administration/nominees', ["nominees" => $data, "search" => ""]);
+    }
+
+    public function nomineesSearch(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            return AdministrationController::nominees();
+        } else {
+
+            $data = AdministrationController::getNomineesData();
+
+            $data = array_filter(
+                $data,
+                function ($var) use ($search, $data) {
+                    return AdministrationController::array_any(
+                        $data,
+                        function ($alias) use ($search) {
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
+                    ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                                }
+                        ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                                }
+                        );
+                }
+            );
+            return view('administration/nominees', ["nominees" => $data, "search" => $search]);
+        }
+    }
+
     public function nominationsSearch(Request $request)
     {
         $search = $request->input('search');
@@ -44,27 +88,50 @@ class AdministrationController extends Controller
                 $data,
                 function ($var) use ($search, $data) {
                     return AdministrationController::array_any(
-                            $data,
-                            function ($alias) use ($search) {
+                        $data,
+                        function ($alias) use ($search) {
                                 return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
                             }
+                    ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                                }
                         ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                            }
-                        ) ||
-                        AdministrationController::array_any(
-                            $data,
-                            function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_email']), strtolower($search));
-                            }
+                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                                }
                         );
                 }
             );
             return view('administration/nominations', ["nominations" => $data, "search" => $search]);
         }
+    }
+
+    private static function getNomineesData()
+    {
+        $nominees = Nominee::all();
+        if (count($nominees) === 0) {
+
+        }
+        $faculties = Faculty::all();
+        $data = [];
+
+        foreach ($nominees as $nominee) {
+            $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
+            array_push($data, $nominee);
+        }
+        return $data;
+    }
+
+    private static function FillNomineesTable()
+    {
+        $response = Nomination::selectRaw('nominee_email, GROUP_CONCAT(DISTINCT achievements SEPARATOR " ") as achievements_merged')
+            ->groupBy('nominee_email')
+            ->get();
     }
 
     private static function getNominationsData()

@@ -34,6 +34,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/nominations/search', [AdministrationController::class, 'nominationsSearch'])->name('search-nominations');
     Route::get('/admin/nominations/{id}', [NominationsController::class, 'remove'])->name('deleteNomination');
 
+    Route::get('/admin/nominees', [AdministrationController::class, 'nominees'])->name('nominees');
+    Route::post('/admin/nominees/search', [AdministrationController::class, 'nomineesSearch'])->name('search-nominees');
+    Route::get('/admin/nominees/{id}', [VotesController::class, 'removeNominee'])->name('deleteNominee');
+
+    Route::get('/admin/votes', [AdministrationController::class, 'votes'])->name('votes');
+    Route::post('/admin/votes/search', [AdministrationController::class, 'votesSearch'])->name('search-votes');
+    Route::get('/admin/votes/{id}', [VotesController::class, 'removeVote'])->name('deleteVote');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

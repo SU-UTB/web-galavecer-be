@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NominationsController;
+use App\Http\Controllers\VotesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/nominations', [NominationsController::class, 'index']);
 Route::post('/nominations', [NominationsController::class, 'store']);
+
+Route::get('/votes', [VotesController::class, 'index']);
+Route::post('/votes', [VotesController::class, 'store']);
