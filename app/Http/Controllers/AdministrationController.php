@@ -120,10 +120,10 @@ class AdministrationController extends Controller
 
     private static function getNomineesData()
     {
-        $nominees = Nominee::all();
-        if (count($nominees) === 0) {
+        if (!Nominee::exists()) {
             self::FillNomineesTable();
         }
+        $nominees = Nominee::all();
         $faculties = Faculty::all();
         $data = [];
 
@@ -145,7 +145,6 @@ class AdministrationController extends Controller
             $merged = $duplicates->pluck('achievements')->unique()->values()->toArray();
             return array_merge($item, ['achievements' => serialize($merged)]);
         })->values()->all();
-
         foreach ($nominations as $nomination) {
             Nominee::create([
                 'first_name' => $nomination['nominee_first_name'],
