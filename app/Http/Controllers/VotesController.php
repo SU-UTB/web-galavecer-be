@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faculty;
 use App\Models\Nominee;
 use App\Models\Vote;
 use Illuminate\Http\Request;
@@ -46,8 +47,10 @@ class VotesController extends Controller
     public static function index()
     {
         $nominees = Nominee::all();
+        $faculties = Faculty::all();
         foreach ($nominees as $nominee) {
             $nominee['achievements'] = unserialize($nominee['achievements']);
+            $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
         }
         return response()->json(
             array(
@@ -120,7 +123,6 @@ class VotesController extends Controller
         ]);
 
         $data = ['vote' => $vote];
-
         return response()->json($data, 200);
     }
 
