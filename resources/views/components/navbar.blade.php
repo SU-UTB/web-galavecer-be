@@ -1,10 +1,16 @@
 @php
     $aDashboard = '';
     $aNominations = '';
+    $aNominees = '';
+    $aVotes = '';
     if (request()->routeIs('dashboard')) {
         $aDashboard = 'active';
     } elseif (request()->routeIs('nominations')) {
         $aNominations = 'active';
+    } elseif (request()->routeIs('nominees')) {
+        $aNominees = 'active';
+    } elseif (request()->routeIs('votes')) {
+        $aVotes = 'active';
     }
 @endphp
 
@@ -17,6 +23,12 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ $aNominations }}" href="/admin/nominations">Nominations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $aNominees }}" href="/admin/nominees">Nominees</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $aVotes }}" href="/admin/votes">Votes</a>
             </li>
 
         </ul>
