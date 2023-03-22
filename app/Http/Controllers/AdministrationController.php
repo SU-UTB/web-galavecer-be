@@ -122,13 +122,14 @@ class AdministrationController extends Controller
     {
         $nominees = Nominee::all();
         if (count($nominees) === 0) {
-
+            self::FillNomineesTable();
         }
         $faculties = Faculty::all();
         $data = [];
 
         foreach ($nominees as $nominee) {
             $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
+            $nominee['achievements'] = implode(', ', unserialize($nominee['achievements']));
             array_push($data, $nominee);
         }
         return $data;
@@ -136,20 +137,36 @@ class AdministrationController extends Controller
 
     private static function FillNomineesTable()
     {
-        $response = Nomination::selectRaw('nominee_email, GROUP_CONCAT(DISTINCT achievements SEPARATOR " ") as achievements')
-            ->groupBy('nominee_email')
-            ->get(); //without categories sportovec/sportovni tym
-        //no idea
+        $allowedCategories = [1, 2, 3, 4, 5, 6];
+        $nominations = Nomination::whereIn('category_id', $allowedCategories)->get()->toArray();
+        $nominations = collect($nominations)->unique('nominee_email')->map(function ($item) use ($nominations) {
+            $duplicates = collect($nominations)->where('nominee_email', $item['nominee_email']);
+            $merged = $duplicates->pluck('achievements')->unique()->values()->toArray();
+            return array_merge($item, ['achievements' => serialize($merged)]);
+        })->values()->all();
+
+        foreach ($nominations as $nomination) {
+            Nominee::create([
+                'first_name' => $nomination['nominee_first_name'],
+                'last_name' => $nomination['nominee_last_name'],
+                'email' => $nomination['nominee_email'],
+                'faculty_id' => $nomination['faculty_id'],
+                'achievements' => $nomination['achievements']
+            ]);
+        }
     }
 
     private static function getVotesData()
     {
         $nominees = Nominee::all();
+        $faculties = Faculty::all();
         $votes = Vote::all();
         $data = [];
 
         foreach ($votes as $vote) {
-            $vote['nominee'] = $nominees->find($vote['nominee_id']);
+            $nominee = $nominees->find($vote['nominee_id']);
+            $vote['nominee'] = $nominee;
+            $vote['faculty'] = $faculties->find($nominee['faculty_id']);
             array_push($data, $vote);
         }
 

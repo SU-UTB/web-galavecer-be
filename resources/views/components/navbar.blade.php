@@ -1,10 +1,16 @@
 @php
     $aDashboard = '';
     $aNominations = '';
+    $aNominees = '';
+    $aVotes = '';
     if (request()->routeIs('dashboard')) {
         $aDashboard = 'active';
     } elseif (request()->routeIs('nominations')) {
         $aNominations = 'active';
+    } elseif (request()->routeIs('nominees')) {
+        $aNominees = 'active';
+    } elseif (request()->routeIs('votes')) {
+        $aVotes = 'active';
     }
 @endphp
 

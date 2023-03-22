@@ -46,6 +46,9 @@ class VotesController extends Controller
     public static function index()
     {
         $nominees = Nominee::all();
+        foreach ($nominees as $nominee) {
+            $nominee['achievements'] = unserialize($nominee['achievements']);
+        }
         return response()->json(
             array(
                 'nominees' => $nominees->toArray()
@@ -121,27 +124,6 @@ class VotesController extends Controller
         return response()->json($data, 200);
     }
 
-    public function NomineesStore(Request $request)
-    {
-        $request->validate([
-            'id' => ['required'],
-            'email' => ['required'],
-            'consent' => ['required']
-        ]);
-
-        $vote = Nominee::create([
-            'first_name' => $request->input('nominee_first_name'),
-            'last_name' => $request->input('nominee_last_name'),
-            'email' => $request->input('nominee_email'),
-            'faculty_id' => $request->input('faculty_id'),
-            'achievements' => $request->input('achievements')
-        ]);
-
-        $data = ['vote' => $vote];
-
-        return response()->json($data, 200);
-    }
-
     function validateEmailExistsInDb($email): bool
     {
         $votes = Vote::all();
@@ -158,7 +140,7 @@ class VotesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function showNominee($id)
     {
         return Nominee::find($id);
     }
@@ -170,11 +152,11 @@ class VotesController extends Controller
      * @param int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function updateNominee(Request $request, $id)
     {
-        $nomination = Nominee::find($id);
-        $nomination->update($request->all());
-        return $nomination;
+        $nominee = Nominee::find($id);
+        $nominee->update($request->all());
+        return $nominee;
     }
 
     /**
@@ -192,5 +174,33 @@ class VotesController extends Controller
     {
         $this->destroyNominee($id);
         return AdministrationController::nominees();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function showVote($id)
+    {
+        return Vote::find($id);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function destroyVote($id)
+    {
+        return Vote::destroy($id);
+    }
+
+    public function removeVote(Request $request, $id)
+    {
+        $this->destroyVote($id);
+        return AdministrationController::votes();
     }
 }

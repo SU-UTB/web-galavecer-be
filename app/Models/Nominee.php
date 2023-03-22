@@ -13,6 +13,7 @@ class Nominee extends Model
     protected $fillable = [
         'first_name',
         'last_name',
+        'email',
         'faculty_id',
         'achievements'
     ];

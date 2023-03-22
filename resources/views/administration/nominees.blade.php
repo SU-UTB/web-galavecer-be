@@ -45,9 +45,9 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Nominee first name</th>
-                        <th scope="col">Nominee last name</th>
+                        <th scope="col">Nominee name</th>
                         <th scope="col">Nominee email</th>
+                        <th scope="col">Nominee faculty</th>
                         <th scope="col">Achievements</th>
                     </tr>
                 </thead>

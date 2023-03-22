@@ -45,18 +45,18 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Nominee first name</th>
-                        <th scope="col">Nominee last name</th>
+                        <th scope="col">Nominee name</th>
                         <th scope="col">Nominee email</th>
+                        <th scope="col">Nominee faculty</th>
                         <th scope="col">Voter email</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($votes as $vote)
                         <tr>
-                            <th scope="row">{{ $nominee['id'] }}</th>
-                            <td>{{ $vote['first_name'] . ' ' . $vote['last_name'] }}</td>
-                            <td>{{ $vote['email'] }}</td>
+                            <th scope="row">{{ $vote['id'] }}</th>
+                            <td>{{ $vote['nominee']['first_name'] . ' ' . $vote['nominee']['last_name'] }}</td>
+                            <td>{{ $vote['nominee']['email'] }}</td>
                             <td>{{ $vote['faculty']['abbrev'] }}</td>
                             <td>{{ $vote['voter_email'] }}</td>
                             <td>
