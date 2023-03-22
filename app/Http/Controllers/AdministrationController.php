@@ -137,7 +137,8 @@ class AdministrationController extends Controller
 
     private static function FillNomineesTable()
     {
-        $allowedCategories = [1, 2, 3, 4, 5, 6];
+        $categories = Category::all();
+        $allowedCategories = $categories->whereNotIn('name', ['Sportovec', 'Sportovní tým'])->pluck('id');
         $nominations = Nomination::whereIn('category_id', $allowedCategories)->get()->toArray();
         $nominations = collect($nominations)->unique('nominee_email')->map(function ($item) use ($nominations) {
             $duplicates = collect($nominations)->where('nominee_email', $item['nominee_email']);
