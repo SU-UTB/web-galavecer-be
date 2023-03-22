@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('nominee_id')->references('id')->on('nominees');
+            $table->foreignId('nominee_id')->references('id')->on('nominees')->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('voter_email');
             $table->boolean('consent');
             $table->timestamps();
