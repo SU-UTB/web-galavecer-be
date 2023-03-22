@@ -129,7 +129,7 @@ class AdministrationController extends Controller
 
         foreach ($nominees as $nominee) {
             $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
-            $nominee['achievements'] = implode(', ', unserialize($nominee['achievements']));
+            $nominee['achievements'] = implode('; ', unserialize($nominee['achievements']));
             array_push($data, $nominee);
         }
         return $data;
