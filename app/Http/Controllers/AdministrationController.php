@@ -14,6 +14,14 @@ class AdministrationController extends Controller
     public function dashboard()
     {
         $nominations = Nomination::all();
+        $nominees = Nominee::all();
+        $mostVoted = array_slice($this->getMostVoted(), 0, 3, true);
+
+        foreach ($mostVoted as $key => $value) {
+            $mostVoted[$key] = [
+                "name" => $nominees->find($key)->first_name . ' ' . $nominees->find($key)->last_name,
+                "count" => $value];
+        }
 
         return view('dashboard', [
             "nominatedTotal" => $nominations->count(),
@@ -22,7 +30,8 @@ class AdministrationController extends Controller
             "nominatedFMK" => $nominations->where('faculty_id', '=', 3)->count(),
             "nominatedFAI" => $nominations->where('faculty_id', '=', 4)->count(),
             "nominatedFHS" => $nominations->where('faculty_id', '=', 5)->count(),
-            "nominatedFLKR" => $nominations->where('faculty_id', '=', 6)->count()
+            "nominatedFLKR" => $nominations->where('faculty_id', '=', 6)->count(),
+            "mostVoted" => $mostVoted
         ]);
     }
 
@@ -203,5 +212,23 @@ class AdministrationController extends Controller
             }
         }
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMostVoted(): array
+    {
+        $all = Vote::all();
+        $mostVoted = [];
+        foreach ($all as $vote) {
+            if (!array_key_exists($vote->nominee_id, $mostVoted)) {
+
+                $mostVoted[$vote->nominee_id] = 1;
+            } else {
+                $mostVoted[$vote->nominee_id] = $mostVoted[$vote->nominee_id] + 1;
+            }
+        }
+        return $mostVoted;
     }
 }

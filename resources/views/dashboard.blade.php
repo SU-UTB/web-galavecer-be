@@ -33,17 +33,24 @@
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6 text-gray-900">
-                            <p>Nominated total: {{ $nominatedTotal }}</p>
-                            <br>
-                            <br>
-                            <p>Nominated FT: {{ $nominatedFT }}</p>
-                            <p>Nominated FAME: {{ $nominatedFAME }}</p>
-                            <p>Nominated FMK: {{ $nominatedFMK }}</p>
-                            <p>Nominated FAI: {{ $nominatedFAI }}</p>
-                            <p>Nominated FHS: {{ $nominatedFHS }}</p>
-                            <p>Nominated FLKR: {{ $nominatedFLKR }}</p>
-
+                        <div class="d-flex p-5">
+                            <div>
+                                <p>Nominated total: {{ $nominatedTotal }}</p>
+                                <br>
+                                <br>
+                                <p>Nominated FT: {{ $nominatedFT }}</p>
+                                <p>Nominated FAME: {{ $nominatedFAME }}</p>
+                                <p>Nominated FMK: {{ $nominatedFMK }}</p>
+                                <p>Nominated FAI: {{ $nominatedFAI }}</p>
+                                <p>Nominated FHS: {{ $nominatedFHS }}</p>
+                                <p>Nominated FLKR: {{ $nominatedFLKR }}</p>
+                                <br>
+                                <br>
+                                <p>Most voted:</p>
+                                @foreach($mostVoted as $mv)
+                                    <p>{{ $mv['name'] . ' '. $mv['count']}}</p>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
