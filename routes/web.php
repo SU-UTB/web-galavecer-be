@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\NominationsController;
-use App\Http\Controllers\VotesController;
+use App\Http\Controllers\NomineesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VotesController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/nominees', [AdministrationController::class, 'nominees'])->name('nominees');
     Route::post('/admin/nominees/search', [AdministrationController::class, 'nomineesSearch'])->name('search-nominees');
     Route::get('/admin/nominees/{id}', [VotesController::class, 'removeNominee'])->name('deleteNominee');
+    Route::post('/admin/nominees/update/{id}', [NomineesController::class, 'update'])->name('updateNominee');
 
     Route::get('/admin/votes', [AdministrationController::class, 'votes'])->name('votes');
     Route::post('/admin/votes/search', [AdministrationController::class, 'votesSearch'])->name('search-votes');

@@ -15,63 +15,77 @@
     <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
 
 </head>
 
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-    </script>
-    <div class="min-h-screen bg-gray-100">
+</script>
+<div class="min-h-screen bg-gray-100">
 
-        <x-navbar></x-navbar>
-        <!-- Page Content -->
-        <main>
+    <x-navbar></x-navbar>
+    <!-- Page Content -->
+    <main>
 
-            <br>
-            <div class="mx-auto" style="width: 250px;">
-                <form name="search-reservation-form" id="search-reservation-form" method="POST"
-                    action="{{ route('search-nominees') }}">
-                    @csrf
+        <br>
+        <div class="mx-auto" style="width: 250px;">
+            <form name="search-reservation-form" id="search-reservation-form" method="POST"
+                  action="{{ route('search-nominees') }}">
+                @csrf
 
-                    <input type="text" class="form-control" id="search" name="search"
-                        placeholder="Search by nominee..." value="{{ $search }}" onchange="this.form.submit();">
-                </form>
-            </div>
-            <br>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nominee name</th>
-                        <th scope="col">Nominee email</th>
-                        <th scope="col">Nominee faculty</th>
-                        <th scope="col">Achievements</th>
-                        <th scope="col">Number of votes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($nominees as $nominee)
-                        <tr>
-                            <th scope="row">{{ $nominee['id'] }}</th>
-                            <td>{{ $nominee['first_name'] . ' ' . $nominee['last_name'] }}</td>
-                            <td>{{ $nominee['email'] }}</td>
-                            <td>{{ $nominee['faculty']['abbrev'] }}</td>
-                            <td>{{ $nominee['achievements'] }}</td>
-                            <td>{{ $nominee['votes'] }}</td>
-                            <td>
-                                <button type="submit" class="btn btn-orange">
-                                    <a href="{{ route('deleteNominee', $nominee['id']) }}">Delete</a></button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <input type="text" class="form-control" id="search" name="search"
+                       placeholder="Search by nominee..." value="{{ $search }}" onchange="this.form.submit();">
+            </form>
+        </div>
+        <br>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nominee name</th>
+                <th scope="col">Nominee email</th>
+                <th scope="col">Nominee faculty</th>
+                <th scope="col">Achievements</th>
+                <th scope="col">Number of votes</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach ($nominees as $nominee)
+            <form name="save-nominee-form" id="save-nominee-form"
+                  action="/admin/nominees/update/{{$nominee->id}}"
+                  method="post">
+                @csrf
 
-        </main>
-    </div>
+                <tr>
+                    <th scope="row">{{ $nominee['id'] }}</th>
+                    <td>{{ $nominee['first_name'] . ' ' . $nominee['last_name'] }}</td>
+                    <td>{{ $nominee['email'] }}</td>
+                    <td>{{ $nominee['faculty']['abbrev'] }}</td>
+                    <td><label>
+                            <textarea class="form-control" cols="75"
+                                      name="achievements">{{ $nominee['achievements'] }}</textarea>
+                        </label></td>
+                    <td>{{ $nominee['votes'] }}</td>
+                    <td>
+                        <button type="submit" class="btn btn-orange">Save</button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-orange">
+                            <a href="{{ route('deleteNominee', $nominee['id']) }}">Delete</a></button>
+                    </td>
+                </tr>
+            </form>
+            @endforeach
+            </tbody>
+        </table>
+
+    </main>
+</div>
 
 
 </body>
