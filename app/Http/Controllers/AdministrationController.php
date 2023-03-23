@@ -125,11 +125,13 @@ class AdministrationController extends Controller
         }
         $nominees = Nominee::all();
         $faculties = Faculty::all();
+        $votes = Vote::all();
         $data = [];
 
         foreach ($nominees as $nominee) {
             $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
-            $nominee['achievements'] = implode('; ', unserialize($nominee['achievements']));
+            $nominee['achievements'] = implode(';', unserialize($nominee['achievements']));
+            $nominee['votes'] = $votes->where('nominee_id', $nominee['id'])->count();
             array_push($data, $nominee);
         }
         return $data;
