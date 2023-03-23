@@ -1,48 +1,50 @@
 @php
-    $aDashboard = '';
-    $aNominations = '';
-    $aNominees = '';
-    $aVotes = '';
-    if (request()->routeIs('dashboard')) {
-        $aDashboard = 'active';
-    } elseif (request()->routeIs('nominations')) {
-        $aNominations = 'active';
-    } elseif (request()->routeIs('nominees')) {
-        $aNominees = 'active';
-    } elseif (request()->routeIs('votes')) {
-        $aVotes = 'active';
-    }
+$aDashboard = '';
+$aNominations = '';
+$aNominees = '';
+$aVotes = '';
+if (request()->routeIs('dashboard')) {
+$aDashboard = 'active';
+} elseif (request()->routeIs('nominations')) {
+$aNominations = 'active';
+} elseif (request()->routeIs('nominees')) {
+$aNominees = 'active';
+} elseif (request()->routeIs('votes')) {
+$aVotes = 'active';
+}
 @endphp
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link {{ $aDashboard }}" href="/admin">Dashboard </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $aNominations }}" href="/admin/nominations">Nominations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $aNominees }}" href="/admin/nominees">Nominees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $aVotes }}" href="/admin/votes">Votes</a>
+                </li>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link {{ $aDashboard }}" href="/admin">Dashboard </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $aNominations }}" href="/admin/nominations">Nominations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $aNominees }}" href="/admin/nominees">Nominees</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ $aVotes }}" href="/admin/votes">Votes</a>
-            </li>
+            </ul>
+            <form method="POST" action="{{ route('logout') }}" name="logout-form" id="logout-form">
+                @csrf
 
-        </ul>
-        <div class="mx-auto"></div>
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <form method="POST" action="{{ route('logout') }}" name="logout-form" id="logout-form">
-                    @csrf
+                <div class="form-group">
+                    <button type="submit" class="btn btn-blue">Logout</button>
+                </div>
+            </form>
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-blue">Logout</button>
-                    </div>
-                </form>
-            </li>
-        </ul>
+        </div>
     </div>
 </nav>
+
