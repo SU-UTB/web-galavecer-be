@@ -49,7 +49,6 @@ class VotesController extends Controller
         $nominees = Nominee::all();
         $faculties = Faculty::all();
         foreach ($nominees as $nominee) {
-            $nominee['achievements'] = unserialize($nominee['achievements']);
             $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
         }
         return response()->json(

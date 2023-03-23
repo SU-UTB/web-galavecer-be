@@ -58,22 +58,22 @@ class AdministrationController extends Controller
                 $data,
                 function ($var) use ($search, $data) {
                     return AdministrationController::array_any(
-                        $data,
-                        function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
-                            }
-                    ) ||
-                        AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                                }
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
                         ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
-                                }
+                                return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                            }
+                        ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                            }
                         );
                 }
             );
@@ -95,22 +95,22 @@ class AdministrationController extends Controller
                 $data,
                 function ($var) use ($search, $data) {
                     return AdministrationController::array_any(
-                        $data,
-                        function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
-                            }
-                    ) ||
-                        AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                                }
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
                         ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
-                                }
+                                return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                            }
+                        ) ||
+                        AdministrationController::array_any(
+                            $data,
+                            function ($alias) use ($search) {
+                                return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                            }
                         );
                 }
             );
@@ -130,7 +130,6 @@ class AdministrationController extends Controller
 
         foreach ($nominees as $nominee) {
             $nominee['faculty'] = $faculties->find($nominee['faculty_id']);
-            $nominee['achievements'] = implode(';', unserialize($nominee['achievements']));
             $nominee['votes'] = $votes->where('nominee_id', $nominee['id'])->count();
             array_push($data, $nominee);
         }
@@ -145,7 +144,8 @@ class AdministrationController extends Controller
         $nominations = collect($nominations)->unique('nominee_email')->map(function ($item) use ($nominations) {
             $duplicates = collect($nominations)->where('nominee_email', $item['nominee_email']);
             $merged = $duplicates->pluck('achievements')->unique()->values()->toArray();
-            return array_merge($item, ['achievements' => serialize($merged)]);
+            $concatedAchievements = join("<br/>", $merged);
+            return array_merge($item, ['achievements' => $concatedAchievements]);
         })->values()->all();
         foreach ($nominations as $nomination) {
             Nominee::create([
