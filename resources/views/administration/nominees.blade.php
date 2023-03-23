@@ -49,6 +49,7 @@
                         <th scope="col">Nominee email</th>
                         <th scope="col">Nominee faculty</th>
                         <th scope="col">Achievements</th>
+                        <th scope="col">Number of votes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,6 +60,7 @@
                             <td>{{ $nominee['email'] }}</td>
                             <td>{{ $nominee['faculty']['abbrev'] }}</td>
                             <td>{{ $nominee['achievements'] }}</td>
+                            <td>{{ $nominee['votes'] }}</td>
                             <td>
                                 <button type="submit" class="btn btn-orange">
                                     <a href="{{ route('deleteNominee', $nominee['id']) }}">Delete</a></button>
