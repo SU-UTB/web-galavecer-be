@@ -229,6 +229,7 @@ class AdministrationController extends Controller
                 $mostVoted[$vote->nominee_id] = $mostVoted[$vote->nominee_id] + 1;
             }
         }
+        arsort($mostVoted);
         return $mostVoted;
     }
 }
