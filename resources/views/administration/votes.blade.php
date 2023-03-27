@@ -41,6 +41,13 @@
                 </form>
             </div>
             <br>
+
+            <div>
+                <button>
+                    <a href="{{ route('checkFakeEmails') }}">Check emails</a>
+                </button>
+            </div>
+
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -49,6 +56,7 @@
                         <th scope="col">Nominee email</th>
                         <th scope="col">Nominee faculty</th>
                         <th scope="col">Voter email</th>
+                        <th scope="col">Fake email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,6 +67,7 @@
                             <td>{{ $vote['nominee']['email'] }}</td>
                             <td>{{ $vote['faculty']['abbrev'] }}</td>
                             <td>{{ $vote['voter_email'] }}</td>
+                            <td>{{ var_export((bool) $vote['isFake'], true) }}</td>
                             <td>
                                 <button type="submit" class="btn btn-orange">
                                     <a href="{{ route('deleteVote', $vote['id']) }}">Delete</a></button>

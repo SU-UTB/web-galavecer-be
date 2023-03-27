@@ -6,6 +6,8 @@ use App\Models\Faculty;
 use App\Models\Nominee;
 use App\Models\Vote;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Info(
@@ -203,5 +205,36 @@ class VotesController extends Controller
     {
         $this->destroyVote($id);
         return AdministrationController::votes();
+    }
+
+    public function checkFakeEmails()
+    {
+        Log::debug('here');
+        $api_key = 'at_GqmkKPtOsVwQfe1oBDvJdc2csP9Dq';
+        $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
+
+        $client = new Client([
+            'base_uri' => $api_url,
+            'headers' => [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $api_key,
+            ],
+        ]);
+
+        $votes = Vote::all();
+        $emails = $votes->pluck('voter_email');
+
+        $response = $client->post('/bulk', [
+            'json' => [
+                'emails' => $emails,
+                'verbose' => true,
+            ],
+        ]);
+
+        $responseData = json_decode($response->getBody(), true);
+        dd($responseData);
+        foreach ($responseData as $email) {
+
+        }
     }
 }

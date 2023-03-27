@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/votes', [AdministrationController::class, 'votes'])->name('votes');
     Route::post('/admin/votes/search', [AdministrationController::class, 'votesSearch'])->name('search-votes');
     Route::get('/admin/votes/{id}', [VotesController::class, 'removeVote'])->name('deleteVote');
+    Route::get('/admin/votes/checkFakeEmails', [VotesController::class, 'checkEmails'])->name('checkFakeEmails');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
