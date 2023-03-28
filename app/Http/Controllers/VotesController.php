@@ -209,25 +209,27 @@ class VotesController extends Controller
 
     public function checkFakeEmails()
     {
-        Log::debug('here');
+        dd('here');
         $api_key = 'at_GqmkKPtOsVwQfe1oBDvJdc2csP9Dq';
         $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
+
+        $api_url2 = 'https://emailverification.whoisxmlapi.com/api/bevService';
 
         $client = new Client([
             'base_uri' => $api_url,
             'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $api_key,
-            ],
+                'Content-type' => 'application/json'
+            ]
         ]);
 
         $votes = Vote::all();
         $emails = $votes->pluck('voter_email');
 
-        $response = $client->post('/bulk', [
+        $response = $client->post('/request', [
             'json' => [
+                'api' => $api_key,
                 'emails' => $emails,
-                'verbose' => true,
+                'format' => 'json'
             ],
         ]);
 
