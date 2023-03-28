@@ -43,9 +43,12 @@
             <br>
 
             <div>
-                <button>
-                    <a href="{{ route('checkFakeEmails') }}">Check emails</a>
-                </button>
+                <form name="check-mails" id="check-mails" method="GET" action="{{ route('checkFakeEmails') }}">
+                    @csrf
+                    <button type="submit">
+                        Check emails
+                    </button>
+                </form>
             </div>
 
             <table class="table table-striped">
