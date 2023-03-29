@@ -222,7 +222,7 @@ class VotesController extends Controller
 
             if ($response->ok()) {
                 $data = $response->json();
-                $vote->isFake = $data['smtpCheck'];
+                $vote->isFake = !$data['smtpCheck'];
                 $vote->save();
             } else {
                 $response->throw("Error getting email address check.");
