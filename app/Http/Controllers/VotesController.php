@@ -6,8 +6,7 @@ use App\Models\Faculty;
 use App\Models\Nominee;
 use App\Models\Vote;
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 /**
  * @OA\Info(
@@ -209,34 +208,33 @@ class VotesController extends Controller
 
     public function checkFakeEmails()
     {
-        dd('here');
         $api_key = 'at_GqmkKPtOsVwQfe1oBDvJdc2csP9Dq';
         $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
 
-        $api_url2 = 'https://emailverification.whoisxmlapi.com/api/bevService';
-
-        $client = new Client([
-            'base_uri' => $api_url,
-            'headers' => [
-                'Content-type' => 'application/json'
-            ]
-        ]);
-
         $votes = Vote::all();
-        $emails = $votes->pluck('voter_email');
 
-        $response = $client->post('/request', [
-            'json' => [
-                'api' => $api_key,
-                'emails' => $emails,
+        foreach ($votes as $vote) {
+            $response = Http::get($api_url, [
+                'api_key' => $api_key,
+                'emailAddress' => $vote['voter_email'],
                 'format' => 'json'
-            ],
-        ]);
+            ]);
 
-        $responseData = json_decode($response->getBody(), true);
-        dd($responseData);
-        foreach ($responseData as $email) {
-
+            if ($response->ok()) {
+                $data = $response->json();
+                if ($data['smtpCheck'] == "true") {
+                    $vote->isFake = false;
+                    $vote->save();
+                } else {
+                    $vote->isFake = true;
+                    $vote->save();
+                }
+            } else {
+                $response->throw("Error getting email address check.");
+            }
         }
+
+        return AdministrationController::votes();
     }
+
 }
