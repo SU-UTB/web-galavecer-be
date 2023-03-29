@@ -208,6 +208,7 @@ class VotesController extends Controller
 
     public function checkFakeEmails()
     {
+        dd("x");
         $api_key = 'at_GqmkKPtOsVwQfe1oBDvJdc2csP9Dq';
         $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
 

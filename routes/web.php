@@ -28,6 +28,7 @@ Route::get('migrate', function () {
     $exitCode = Artisan::call('migrate');
     return $exitCode;
 });
+Route::get('/checkFakeEmails', [VotesController::class, 'checkFakeEmails'])->name('checkFakeEmails');
 
 Route::middleware('auth')->group(function () {
 
@@ -44,7 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/votes', [AdministrationController::class, 'votes'])->name('votes');
     Route::post('/admin/votes/search', [AdministrationController::class, 'votesSearch'])->name('search-votes');
     Route::get('/admin/votes/{id}', [VotesController::class, 'removeVote'])->name('deleteVote');
-    Route::get('/admin/votes/checkFakeEmails', [VotesController::class, 'checkFakeEmails'])->name('checkFakeEmails');
 
     Route::get('/admin/results', [AdministrationController::class, 'results'])->name('results');
 
