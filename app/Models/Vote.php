@@ -14,6 +14,7 @@ class Vote extends Model
         'nominee_id',
         'voter_email',
         'consent',
-        'isFake'
+        'isFake',
+        'isChecked'
     ];
 }

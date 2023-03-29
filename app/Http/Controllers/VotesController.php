@@ -211,7 +211,7 @@ class VotesController extends Controller
         $api_key = env('API_KEY_EMAIL_VERIFICATION');
         $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
 
-        $votes = Vote::all();
+        $votes = Vote::all()->whereNotIn('isChecked', [1]);
 
         foreach ($votes as $vote) {
             $response = Http::get($api_url, [
@@ -222,8 +222,15 @@ class VotesController extends Controller
 
             if ($response->ok()) {
                 $data = $response->json();
-                $vote->isFake = !$data['smtpCheck'];
-                $vote->save();
+                if ($data['smtpCheck'] == "true") {
+                    $vote->isFake = false;
+                    $vote->isChecked = true;
+                    $vote->save();
+                } else {
+                    $vote->isFake = true;
+                    $vote->isChecked = true;
+                    $vote->save();
+                }
             } else {
                 $response->throw("Error getting email address check.");
             }
