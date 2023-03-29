@@ -38,8 +38,17 @@ class ResultsController extends Controller
             $nominee['votes'] = $votes->where('nominee_id', $nominee['id'])->where('isFake', 0)->count();
             array_push($data, $nominee);
         }
+
+        /*usort(
+        $data,
+        function ($a, $b) {
+        return $a['votes'] - $b['votes'];
+        }
+        );*/
         arsort($data);
+
         $data = array_slice($data, 0, 3);
+
         return response()->json(
             array(
                 'results' => $data

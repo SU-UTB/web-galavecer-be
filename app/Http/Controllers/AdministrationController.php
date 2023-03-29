@@ -60,6 +60,12 @@ class AdministrationController extends Controller
         return view('administration/results', ["nominees" => $data]);
     }
 
+    public static function voters()
+    {
+        $data = AdministrationController::getVotersData();
+        return view('administration/voters', ["voters" => $data]);
+    }
+
     public function nomineesSearch(Request $request)
     {
         $search = $request->input('search');
@@ -76,20 +82,20 @@ class AdministrationController extends Controller
                     return AdministrationController::array_any(
                         $data,
                         function ($alias) use ($search) {
-                            return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
-                        }
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
                     ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                            }
+                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                                }
                         ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_email']), strtolower($search));
-                            }
+                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                                }
                         );
                 }
             );
@@ -113,20 +119,20 @@ class AdministrationController extends Controller
                     return AdministrationController::array_any(
                         $data,
                         function ($alias) use ($search) {
-                            return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
-                        }
+                                return str_contains(strtolower($alias['nominee_first_name']), strtolower($search));
+                            }
                     ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
-                            }
+                                    return str_contains(strtolower($alias['nominee_last_name']), strtolower($search));
+                                }
                         ) ||
                         AdministrationController::array_any(
                             $data,
                             function ($alias) use ($search) {
-                                return str_contains(strtolower($alias['nominee_email']), strtolower($search));
-                            }
+                                    return str_contains(strtolower($alias['nominee_email']), strtolower($search));
+                                }
                         );
                 }
             );
@@ -224,14 +230,28 @@ class AdministrationController extends Controller
             array_push($data, $nominee);
         }
 
-        usort(
-            $data,
-            function ($a, $b) {
-                return $a['votes'] - $b['votes'];
-            }
-        );
+        /*usort(
+        $data,
+        function ($a, $b) {
+        return $a['votes'] - $b['votes'];
+        }
+        );*/
+
+        arsort($data);
         return $data;
     }
+
+    private static function getVotersData()
+    {
+        $votes = Vote::all()->whereNotIn('isFake', [1]);
+        $data = [];
+
+        foreach ($votes as $vote) {
+            array_push($data, $vote['voter_email']);
+        }
+        return $data;
+    }
+
     private static function array_any(array $array, callable $fn)
     {
         foreach ($array as $value) {

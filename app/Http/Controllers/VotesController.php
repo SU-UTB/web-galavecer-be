@@ -208,15 +208,14 @@ class VotesController extends Controller
 
     public function checkFakeEmails()
     {
-        dd("x");
-        $api_key = 'at_GqmkKPtOsVwQfe1oBDvJdc2csP9Dq';
+        $api_key = env('API_KEY');
         $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
 
         $votes = Vote::all();
 
         foreach ($votes as $vote) {
             $response = Http::get($api_url, [
-                'api_key' => $api_key,
+                'apiKey' => $api_key,
                 'emailAddress' => $vote['voter_email'],
                 'format' => 'json'
             ]);
@@ -235,7 +234,7 @@ class VotesController extends Controller
             }
         }
 
-        return AdministrationController::votes();
+        return 1;
     }
 
 }

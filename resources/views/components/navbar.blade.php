@@ -4,6 +4,7 @@
     $aNominees = '';
     $aVotes = '';
     $aResults = '';
+    $aVoters = '';
     if (request()->routeIs('dashboard')) {
         $aDashboard = 'active';
     } elseif (request()->routeIs('nominations')) {
@@ -14,6 +15,8 @@
         $aVotes = 'active';
     } elseif (request()->routeIs('results')) {
         $aResults = 'active';
+    } elseif (request()->routeIs('voters')) {
+        $aVoters = 'active';
     }
 @endphp
 
@@ -39,6 +42,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ $aResults }}" href="/admin/results">Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $aVoters }}" href="/admin/voters">Voters</a>
                 </li>
             </ul>
             <form method="POST" action="{{ route('logout') }}" name="logout-form" id="logout-form">
