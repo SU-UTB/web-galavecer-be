@@ -38,7 +38,7 @@
                 <tbody>
                     @foreach ($voters as $voter)
                         <tr>
-                            <th scope="row">{{ $voter }}</th>
+                            <th scope="row">{{ $voter['voter_email'] }}</th>
                         </tr>
                     @endforeach
                 </tbody>

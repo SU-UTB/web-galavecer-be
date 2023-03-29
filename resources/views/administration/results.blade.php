@@ -33,7 +33,6 @@
                 <thead>
                     <tr>
                         <th scope="col">Number of valid votes</th>
-                        <th scope="col">#</th>
                         <th scope="col">Nominee name</th>
                         <th scope="col">Nominee email</th>
                         <th scope="col">Nominee faculty</th>
@@ -45,7 +44,6 @@
                     @foreach ($nominees as $nominee)
                         <tr>
                             <th scope="row">{{ $nominee['votes'] }}</th>
-                            <td>{{ $nominee['id'] }}</td>
                             <td>{{ $nominee['first_name'] . ' ' . $nominee['last_name'] }}</td>
                             <td>{{ $nominee['email'] }}</td>
                             <td>{{ $nominee['faculty']['abbrev'] }}</td>

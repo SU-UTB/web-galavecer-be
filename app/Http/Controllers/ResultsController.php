@@ -39,13 +39,12 @@ class ResultsController extends Controller
             array_push($data, $nominee);
         }
 
-        /*usort(
-        $data,
-        function ($a, $b) {
-        return $a['votes'] - $b['votes'];
-        }
-        );*/
-        arsort($data);
+        usort(
+            $data,
+            function ($a, $b) {
+                return $b['votes'] - $a['votes'];
+            }
+        );
 
         $data = array_slice($data, 0, 3);
 

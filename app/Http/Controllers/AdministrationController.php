@@ -230,26 +230,20 @@ class AdministrationController extends Controller
             array_push($data, $nominee);
         }
 
-        /*usort(
-        $data,
-        function ($a, $b) {
-        return $a['votes'] - $b['votes'];
-        }
-        );*/
+        usort(
+            $data,
+            function ($a, $b) {
+                return $b['votes'] - $a['votes'];
+            }
+        );
 
-        arsort($data);
         return $data;
     }
 
     private static function getVotersData()
     {
-        $votes = Vote::all()->whereNotIn('isFake', [1]);
-        $data = [];
-
-        foreach ($votes as $vote) {
-            array_push($data, $vote['voter_email']);
-        }
-        return $data;
+        $emails = Vote::select('voter_email')->whereNotIn('isFake', [1])->get();
+        return $emails;
     }
 
     private static function array_any(array $array, callable $fn)

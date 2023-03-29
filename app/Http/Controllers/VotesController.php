@@ -208,7 +208,7 @@ class VotesController extends Controller
 
     public function checkFakeEmails()
     {
-        $api_key = env('API_KEY');
+        $api_key = env('API_KEY_EMAIL_VERIFICATION');
         $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
 
         $votes = Vote::all();
@@ -222,13 +222,8 @@ class VotesController extends Controller
 
             if ($response->ok()) {
                 $data = $response->json();
-                if ($data['smtpCheck'] == "true") {
-                    $vote->isFake = false;
-                    $vote->save();
-                } else {
-                    $vote->isFake = true;
-                    $vote->save();
-                }
+                $vote->isFake = $data['smtpCheck'];
+                $vote->save();
             } else {
                 $response->throw("Error getting email address check.");
             }
