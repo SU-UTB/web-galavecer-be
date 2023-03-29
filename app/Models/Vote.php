@@ -13,6 +13,8 @@ class Vote extends Model
     protected $fillable = [
         'nominee_id',
         'voter_email',
-        'consent'
+        'consent',
+        'isFake',
+        'isChecked'
     ];
 }

@@ -1,23 +1,29 @@
 @php
-$aDashboard = '';
-$aNominations = '';
-$aNominees = '';
-$aVotes = '';
-if (request()->routeIs('dashboard')) {
-$aDashboard = 'active';
-} elseif (request()->routeIs('nominations')) {
-$aNominations = 'active';
-} elseif (request()->routeIs('nominees')) {
-$aNominees = 'active';
-} elseif (request()->routeIs('votes')) {
-$aVotes = 'active';
-}
+    $aDashboard = '';
+    $aNominations = '';
+    $aNominees = '';
+    $aVotes = '';
+    $aResults = '';
+    $aVoters = '';
+    if (request()->routeIs('dashboard')) {
+        $aDashboard = 'active';
+    } elseif (request()->routeIs('nominations')) {
+        $aNominations = 'active';
+    } elseif (request()->routeIs('nominees')) {
+        $aNominees = 'active';
+    } elseif (request()->routeIs('votes')) {
+        $aVotes = 'active';
+    } elseif (request()->routeIs('results')) {
+        $aResults = 'active';
+    } elseif (request()->routeIs('voters')) {
+        $aVoters = 'active';
+    }
 @endphp
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -34,7 +40,12 @@ $aVotes = 'active';
                 <li class="nav-item">
                     <a class="nav-link {{ $aVotes }}" href="/admin/votes">Votes</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link {{ $aResults }}" href="/admin/results">Results</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ $aVoters }}" href="/admin/voters">Voters</a>
+                </li>
             </ul>
             <form method="POST" action="{{ route('logout') }}" name="logout-form" id="logout-form">
                 @csrf
@@ -47,4 +58,3 @@ $aVotes = 'active';
         </div>
     </div>
 </nav>
-

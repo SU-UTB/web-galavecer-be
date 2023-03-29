@@ -6,6 +6,7 @@ use App\Models\Faculty;
 use App\Models\Nominee;
 use App\Models\Vote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 /**
  * @OA\Info(
@@ -204,4 +205,38 @@ class VotesController extends Controller
         $this->destroyVote($id);
         return AdministrationController::votes();
     }
+
+    public function checkFakeEmails()
+    {
+        $api_key = env('API_KEY_EMAIL_VERIFICATION');
+        $api_url = 'https://emailverification.whoisxmlapi.com/api/v2';
+
+        $votes = Vote::all()->whereNotIn('isChecked', [1]);
+
+        foreach ($votes as $vote) {
+            $response = Http::get($api_url, [
+                'apiKey' => $api_key,
+                'emailAddress' => $vote['voter_email'],
+                'format' => 'json'
+            ]);
+
+            if ($response->ok()) {
+                $data = $response->json();
+                if ($data['smtpCheck'] == "true") {
+                    $vote->isFake = false;
+                    $vote->isChecked = true;
+                    $vote->save();
+                } else {
+                    $vote->isFake = true;
+                    $vote->isChecked = true;
+                    $vote->save();
+                }
+            } else {
+                $response->throw("Error getting email address check.");
+            }
+        }
+
+        return 1;
+    }
+
 }

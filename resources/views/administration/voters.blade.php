@@ -29,43 +29,16 @@
         <x-navbar></x-navbar>
         <!-- Page Content -->
         <main>
-
-            <br>
-            <div class="mx-auto" style="width: 250px;">
-                <form name="search-reservation-form" id="search-reservation-form" method="POST"
-                    action="{{ route('search-votes') }}">
-                    @csrf
-
-                    <input type="text" class="form-control" id="search" name="search"
-                        placeholder="Search by nominee..." value="{{ $search }}" onchange="this.form.submit();">
-                </form>
-            </div>
-            <br>
-
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nominee name</th>
-                        <th scope="col">Nominee email</th>
-                        <th scope="col">Nominee faculty</th>
                         <th scope="col">Voter email</th>
-                        <th scope="col">Fake email</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($votes as $vote)
+                    @foreach ($voters as $voter)
                         <tr>
-                            <th scope="row">{{ $vote['id'] }}</th>
-                            <td>{{ $vote['nominee']['first_name'] . ' ' . $vote['nominee']['last_name'] }}</td>
-                            <td>{{ $vote['nominee']['email'] }}</td>
-                            <td>{{ $vote['faculty']['abbrev'] }}</td>
-                            <td>{{ $vote['voter_email'] }}</td>
-                            <td>{{ var_export((bool) $vote['isFake'], true) }}</td>
-                            <td>
-                                <button type="submit" class="btn btn-orange">
-                                    <a href="{{ route('deleteVote', $vote['id']) }}">Delete</a></button>
-                            </td>
+                            <th scope="row">{{ $voter['voter_email'] }}</th>
                         </tr>
                     @endforeach
                 </tbody>
